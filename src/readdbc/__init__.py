@@ -21,7 +21,10 @@ import pandas as pd
 from readdbc._blast import BlastError, blast_decompress
 from readdbc._dbf import DBFError, is_dbf, read_dbf_columns
 
+__version__ = "0.1.0"
+
 __all__ = [
+    "__version__",
     "read_dbc",
     "read_dbf",
     "blast_decompress",

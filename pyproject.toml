@@ -6,20 +6,40 @@ build-backend = "setuptools.build_meta"
 name = "readdbc"
 version = "0.1.0"
 description = "Pure-Python reader for DATASUS .dbc files (blast-compressed dBASE III)"
+readme = "README.md"
 license = "MIT"
+license-files = ["LICENSE"]
 requires-python = ">=3.10"
 authors = [{ name = "ClimaSUS Team" }]
 keywords = ["datasus", "dbc", "dbf", "sus", "blast", "pkware"]
 classifiers = [
     "Development Status :: 4 - Beta",
     "Intended Audience :: Science/Research",
+    "Operating System :: OS Independent",
     "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
     "Topic :: Scientific/Engineering :: Medical Science Apps.",
 ]
 dependencies = ["pandas>=2.0"]
+
+[project.urls]
+Homepage = "https://github.com/climasus/climasus_readdbc_py"
+Repository = "https://github.com/climasus/climasus_readdbc_py"
+"Bug Tracker" = "https://github.com/climasus/climasus_readdbc_py/issues"
 
 [project.optional-dependencies]
 dev = ["pytest>=7.0"]
 
 [tool.setuptools.packages.find]
 where = ["src"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+
+[tool.ruff]
+target-version = "py310"
+line-length = 100
+select = ["E", "F", "I", "W", "UP"]
