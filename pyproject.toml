@@ -3,7 +3,7 @@ requires = ["setuptools>=68.0"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "readdbc"
+name = "climasus_readdbc_py"
 version = "0.1.0"
 description = "Pure-Python reader for DATASUS .dbc files (blast-compressed dBASE III)"
 readme = "README.md"
