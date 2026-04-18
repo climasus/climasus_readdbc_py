@@ -15,7 +15,6 @@ from __future__ import annotations
 
 import struct
 from pathlib import Path
-from typing import Any
 
 import pandas as pd
 

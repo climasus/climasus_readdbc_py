@@ -143,6 +143,33 @@ class TestReadDBF:
         assert len(cols["VAL"]) == 2
         assert cols["VAL"] == ["AAA", "CCC"]
 
+    def test_record_size_zero_raises(self):
+        """DBF with record_size=0 must raise, not divide by zero."""
+        dbf_bytes = bytearray(_make_dbf([("X", "C", 5)], [["hello"]]))
+        struct.pack_into("<H", dbf_bytes, 10, 0)  # force record_size=0
+        with pytest.raises(DBFError, match="record_size 0"):
+            read_dbf_columns(bytes(dbf_bytes))
+
+    def test_field_length_zero_raises(self):
+        """A field with length=0 must raise during parsing."""
+        dbf_bytes = bytearray(_make_dbf([("X", "C", 5)], [["hello"]]))
+        # Field descriptor starts at byte 32; length byte at offset 16 within it
+        dbf_bytes[32 + 16] = 0
+        with pytest.raises(DBFError, match="invalid field length 0"):
+            read_dbf_columns(bytes(dbf_bytes))
+
+    def test_duplicate_field_names(self):
+        """Duplicate field names should get a _N suffix, not overwrite."""
+        dbf = _make_dbf(
+            [("VAL", "C", 3), ("VAL", "C", 3)],
+            [["AAA", "BBB"]],
+        )
+        cols = read_dbf_columns(dbf)
+        assert "VAL" in cols
+        assert "VAL_1" in cols
+        assert cols["VAL"] == ["AAA"]
+        assert cols["VAL_1"] == ["BBB"]
+
 
 # ── DataFrame API ───────────────────────────────────────────────────────
 
@@ -190,6 +217,29 @@ class TestReadDBC:
         dbf = _make_dbf([("A", "C", 3)], [["xyz"]])
         result = dbc_to_dbf(dbf)
         assert result == dbf
+
+    def test_dbc_too_small_raises(self):
+        """DBC file smaller than minimum header must raise."""
+        with pytest.raises(DBCError, match="too small"):
+            dbc_to_dbf(b"\x00" * 13)
+
+    def test_dbc_header_size_zero_raises(self):
+        """DBC with header_size=0 must raise."""
+        data = bytearray(32)
+        data[0] = 0x03
+        struct.pack_into("<H", data, 8, 0)  # header_size = 0
+        with pytest.raises(DBCError, match="invalid DBC"):
+            dbc_to_dbf(bytes(data))
+
+    def test_dbc_header_exceeds_file_raises(self):
+        """DBC where header_size+4 >= file length must raise."""
+        data = bytearray(64)
+        data[0] = 0x03
+        struct.pack_into("<I", data, 4, 1000)   # n_records=1000 → not a plain DBF
+        struct.pack_into("<H", data, 8, 62)      # header_size = 62, file=64, 62+4>64
+        struct.pack_into("<H", data, 10, 100)    # record_size = 100
+        with pytest.raises(DBCError, match="invalid DBC"):
+            dbc_to_dbf(bytes(data))
 
 
 # ── Real DBC file test (skipped if no test file available) ──────────────

@@ -62,6 +62,8 @@ def _parse_fields(data: bytes | memoryview, header_size: int) -> list[_Field]:
         ftype = chr(data[offset + 11])
         length = data[offset + 16]
         decimal = data[offset + 17]
+        if length == 0:
+            raise DBFError(f"invalid field length 0 for field {name!r}")
         fields.append(_Field(name, ftype, length, decimal))
         offset += 32
     return fields
@@ -114,11 +116,14 @@ def read_dbf_records(
         # Some files have padding — adjust by trusting record_size.
         pass
 
+    if record_size == 0:
+        raise DBFError("invalid record_size 0 in DBF header")
+
     records: list[dict[str, Any]] = []
     data_start = header_size
     # Be robust: read as many records as the data actually contains,
     # even if n_records in the header is wrong.
-    max_records = (len(data) - data_start) // record_size if record_size > 0 else 0
+    max_records = (len(data) - data_start) // record_size
     actual_records = min(n_records, max_records)
 
     for i in range(actual_records):
@@ -166,10 +171,25 @@ def read_dbf_columns(
     if not fields:
         raise DBFError("no field descriptors found in DBF header")
 
-    columns: dict[str, list[Any]] = {f.name: [] for f in fields}
+    if record_size == 0:
+        raise DBFError("invalid record_size 0 in DBF header")
+
+    # Handle duplicate field names by appending a suffix.
+    seen: dict[str, int] = {}
+    unique_names: list[str] = []
+    for f in fields:
+        if f.name in seen:
+            seen[f.name] += 1
+            unique = f"{f.name}_{seen[f.name]}"
+            unique_names.append(unique)
+        else:
+            seen[f.name] = 0
+            unique_names.append(f.name)
+
+    columns: dict[str, list[Any]] = {name: [] for name in unique_names}
 
     data_start = header_size
-    max_records = (len(data) - data_start) // record_size if record_size > 0 else 0
+    max_records = (len(data) - data_start) // record_size
     actual_records = min(n_records, max_records)
 
     for i in range(actual_records):
@@ -184,10 +204,10 @@ def read_dbf_columns(
             break
 
         field_offset = rec_offset + 1
-        for field in fields:
+        for field, col_name in zip(fields, unique_names):
             raw = data[field_offset : field_offset + field.length]
             value = _parse_value(raw, field, encoding)
-            columns[field.name].append(value)
+            columns[col_name].append(value)
             field_offset += field.length
 
     return columns
