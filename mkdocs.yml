@@ -43,8 +43,6 @@ theme:
     - content.code.copy
     - toc.follow
 
-  custom_dir: docs/overrides
-
 extra_css:
   - assets/climasus.css
 
