@@ -1,27 +1,43 @@
 /* ==========================================================================
-   CLIMA-SUS — MkDocs Material custom theme
-   Importa as variáveis do design system e sobrescreve as cores do Material.
+   CLIMA-SUS Design System — MkDocs Material adaptation (climasus_readdbc_py)
+   Tokens oficiais: https://github.com/climasus/design-system/
    ========================================================================== */
 
-/* Importar fontes */
+/* Importar fontes do design system */
 @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700;800&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
+
+/* ---------------------------------------------------------------------------
+   Tokens CSS — Design System CLIMA-SUS
+   --------------------------------------------------------------------------- */
+:root {
+    --climasus-primary:        #00FF88;
+    --climasus-primary-dark:   #00CC6A;
+    --climasus-primary-darker: #009E52;
+    --climasus-secondary:      #A855F7;
+    --climasus-logo-green:     #00CC6A;
+    --climasus-logo-blue:      #0091FF;
+    --climasus-accent-blue:    #3B82F6;
+    --climasus-bg-dark:        #0a0a0f;
+    --climasus-text-primary:   #18181B;
+    --climasus-text-secondary: #52525B;
+    --climasus-gradient-primary: linear-gradient(135deg, var(--climasus-primary-dark), var(--climasus-secondary));
+    --climasus-gradient-logo:    linear-gradient(135deg, var(--climasus-logo-green), var(--climasus-logo-blue));
+}
 
 /* ---------------------------------------------------------------------------
    Cores — Light mode
    --------------------------------------------------------------------------- */
 [data-md-color-scheme="default"] {
-    /* Primária: verde CLIMA-SUS */
     --md-primary-fg-color:          #00CC6A;
     --md-primary-fg-color--light:   #00FF88;
     --md-primary-fg-color--dark:    #009E52;
     --md-primary-bg-color:          #ffffff;
     --md-primary-bg-color--light:   rgba(0, 204, 106, 0.10);
 
-    /* Acento: azul logo */
     --md-accent-fg-color:           #0091FF;
     --md-accent-fg-color--transparent: rgba(0, 145, 255, 0.10);
 
-    /* Tipografia */
+    --md-typeset-color:             var(--climasus-text-primary);
     --md-text-font:                 "Inter";
     --md-code-font:                 "JetBrains Mono";
 }
@@ -33,22 +49,25 @@
     --md-primary-fg-color:          #00FF88;
     --md-primary-fg-color--light:   #33FFA0;
     --md-primary-fg-color--dark:    #00CC6A;
-    --md-primary-bg-color:          #0a0a0f;
+    --md-primary-bg-color:          var(--climasus-bg-dark);
     --md-primary-bg-color--light:   rgba(0, 255, 136, 0.08);
 
-    --md-accent-fg-color:           #3B82F6;
+    --md-accent-fg-color:           var(--climasus-accent-blue);
     --md-accent-fg-color--transparent: rgba(59, 130, 246, 0.10);
 
     --md-default-bg-color:          #111118;
     --md-default-bg-color--light:   #1a1a24;
-    --md-code-bg-color:             #0a0a0f;
+    --md-default-bg-color--lightest:#22222e;
+    --md-code-bg-color:             var(--climasus-bg-dark);
+
+    --md-typeset-color:             #e4e4e7;
 }
 
 /* ---------------------------------------------------------------------------
-   Header / Navbar
+   Header / Navbar — gradiente logo (verde→azul)
    --------------------------------------------------------------------------- */
 .md-header {
-    background: linear-gradient(135deg, #00CC6A, #0091FF);
+    background: var(--climasus-gradient-logo);
     box-shadow: 0 2px 12px rgba(0, 204, 106, 0.25);
 }
 
@@ -58,22 +77,10 @@
     letter-spacing: -0.02em;
 }
 
-/* Logo no header */
 .md-header__button.md-logo img,
 .md-header__button.md-logo svg {
     height: 32px;
     width: auto;
-}
-
-/* Tabs de navegação */
-.md-tabs {
-    background: linear-gradient(135deg, #00CC6A, #0091FF);
-}
-
-.md-tabs__link--active,
-.md-tabs__link:hover {
-    color: #ffffff;
-    opacity: 1;
 }
 
 /* ---------------------------------------------------------------------------
@@ -89,7 +96,7 @@
 }
 
 /* ---------------------------------------------------------------------------
-   Tipografia
+   Tipografia — fontes do design system
    --------------------------------------------------------------------------- */
 .md-typeset h1,
 .md-typeset h2,
@@ -99,8 +106,17 @@
     letter-spacing: -0.02em;
 }
 
+/* h1 com gradiente primário (verde→roxo) */
 .md-typeset h1 {
-    background: linear-gradient(135deg, #00CC6A, #0091FF);
+    background: var(--climasus-gradient-primary);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+/* h2 com gradiente logo (verde→azul) */
+.md-typeset h2 {
+    background: var(--climasus-gradient-logo);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
@@ -127,6 +143,14 @@
     overflow: hidden;
 }
 
+.highlight pre {
+    border-left: 3px solid var(--climasus-primary-dark);
+}
+
+[data-md-color-scheme="slate"] .highlight pre {
+    border-left-color: var(--climasus-secondary);
+}
+
 /* ---------------------------------------------------------------------------
    Admonitions — cores personalizadas
    --------------------------------------------------------------------------- */
@@ -150,11 +174,30 @@
     border-color: #00CC6A;
 }
 
+.md-typeset .admonition.warning,
+.md-typeset details.warning {
+    border-color: var(--climasus-secondary);
+}
+.md-typeset .admonition.warning > .admonition-title,
+.md-typeset details.warning > summary {
+    background-color: rgba(168, 85, 247, 0.10);
+    border-color: var(--climasus-secondary);
+}
+
 /* ---------------------------------------------------------------------------
    mkdocstrings — blocos de referência de API
    --------------------------------------------------------------------------- */
 .doc-heading {
     font-family: 'Space Grotesk', sans-serif;
+    font-weight: 600;
+    padding-bottom: 0.3em;
+    border-bottom: 2px solid rgba(0, 204, 106, 0.20);
+}
+
+.doc-heading code {
+    background: transparent !important;
+    color: inherit !important;
+    -webkit-text-fill-color: initial;
 }
 
 .doc-label {
@@ -169,6 +212,44 @@
     color: #009E52;
 }
 
+.doc-label-property {
+    background: rgba(0, 145, 255, 0.12);
+    color: #0091FF;
+}
+
+.doc-label-class-method {
+    background: rgba(168, 85, 247, 0.12);
+    color: var(--climasus-secondary);
+}
+
+/* Descrição do objeto documentado */
+.doc-object .doc-contents > .doc-md-description {
+    border-left: 3px solid var(--climasus-primary-dark);
+    padding-left: 1em;
+    margin-top: 0.5em;
+}
+
+[data-md-color-scheme="slate"] .doc-object .doc-contents > .doc-md-description {
+    border-left-color: var(--climasus-accent-blue);
+}
+
+/* Separador entre objetos documentados */
+.doc-object + .doc-object {
+    margin-top: 2em;
+    padding-top: 1.5em;
+    border-top: 1px solid rgba(0, 204, 106, 0.12);
+}
+
+[data-md-color-scheme="slate"] .doc-object + .doc-object {
+    border-top-color: rgba(0, 255, 136, 0.08);
+}
+
+/* Source code toggle */
+.doc-source details summary {
+    color: var(--climasus-accent-blue);
+    font-size: 0.85em;
+}
+
 /* ---------------------------------------------------------------------------
    Botões / links de destaque
    --------------------------------------------------------------------------- */
@@ -180,7 +261,7 @@
 }
 
 .md-typeset .md-button--primary {
-    background: linear-gradient(135deg, #00CC6A, #0091FF);
+    background: var(--climasus-gradient-logo);
     border-color: transparent;
     color: #ffffff;
 }
@@ -191,10 +272,10 @@
 }
 
 /* ---------------------------------------------------------------------------
-   Footer
+   Footer — fundo escuro do design system
    --------------------------------------------------------------------------- */
 .md-footer {
-    background: #0a0a0f;
+    background: var(--climasus-bg-dark);
 }
 
 .md-footer-meta {
@@ -225,10 +306,6 @@
     background: rgba(0, 204, 106, 0.04);
 }
 
-/* ---------------------------------------------------------------------------
-   Badges de versão no topo das páginas de API
-   --------------------------------------------------------------------------- */
-.doc-object-description .doc-md-description p:first-child code {
-    background: rgba(0, 145, 255, 0.10);
-    color: #0091FF;
+[data-md-color-scheme="slate"] .md-typeset table:not([class]) th {
+    background: linear-gradient(135deg, rgba(0, 204, 106, 0.10), rgba(168, 85, 247, 0.10));
 }

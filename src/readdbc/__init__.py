@@ -75,17 +75,23 @@ def _is_plain_dbf(data: bytes) -> bool:
 
 
 def dbc_to_dbf(data: bytes) -> bytes:
-    """Decompress a .dbc file to raw .dbf bytes.
+    """Descomprime um arquivo .dbc para bytes .dbf brutos.
 
-    Parameters
-    ----------
-    data : bytes
-        Contents of a .dbc file.
+    Args:
+        data (bytes): Conteúdo binário de um arquivo .dbc — cabeçalho DBF
+            não comprimido seguido dos registros comprimidos via PKWare blast.
 
-    Returns
-    -------
-    bytes
-        Decompressed .dbf data.
+    Returns:
+        bytes: Dados .dbf descomprimidos, prontos para leitura pelo parser DBF.
+
+    Raises:
+        DBCError: Se o arquivo for muito pequeno, tiver ``header_size`` inválido
+            ou se a descompressão blast falhar.
+
+    Example:
+        >>> with open("DOSP2023.dbc", "rb") as f:
+        ...     raw = f.read()
+        >>> dbf_bytes = dbc_to_dbf(raw)
     """
     # ── Plain DBF pass-through ──────────────────────────────────────────
     if _is_plain_dbf(data):
@@ -125,20 +131,28 @@ def read_dbc(
     *,
     encoding: str = "latin1",
 ) -> pd.DataFrame:
-    """Read a DATASUS .dbc file and return a pandas DataFrame.
+    """Lê um arquivo .dbc do DATASUS e retorna um pandas DataFrame.
 
-    Parameters
-    ----------
-    source : str, Path, or bytes
-        File path or raw file contents.
-    encoding : str
-        Text encoding for string fields (default ``latin1``).
+    Args:
+        source (str | Path | bytes): Caminho para o arquivo .dbc ou conteúdo
+            bruto do arquivo em bytes.
+        encoding (str): Codificação de texto para campos de string.
+            Padrão: ``"latin1"``.
 
-    Returns
-    -------
-    pandas.DataFrame
-        All values are returned as strings; apply type conversions
-        downstream (e.g. via ``climasus4py``).
+    Returns:
+        pandas.DataFrame: Todos os valores são retornados como strings;
+            aplique conversões de tipo downstream (ex.: via ``climasus4py``).
+
+    Raises:
+        DBCError: Se o arquivo não for um .dbc ou .dbf válido.
+        DBFError: Se o conteúdo DBF descomprimido for inválido.
+        OSError: Se o arquivo não puder ser aberto para leitura.
+
+    Example:
+        >>> import readdbc
+        >>> df = readdbc.read_dbc("DOSP2023.dbc")
+        >>> print(df.shape)
+        (n_records, n_fields)
     """
     if isinstance(source, (str, Path)):
         with open(source, "rb") as f:
@@ -156,14 +170,26 @@ def read_dbf(
     *,
     encoding: str = "latin1",
 ) -> pd.DataFrame:
-    """Read a standard .dbf file and return a pandas DataFrame.
+    """Lê um arquivo .dbf padrão e retorna um pandas DataFrame.
 
-    Parameters
-    ----------
-    source : str, Path, or bytes
-        File path or raw file contents.
-    encoding : str
-        Text encoding for string fields (default ``latin1``).
+    Args:
+        source (str | Path | bytes): Caminho para o arquivo .dbf ou conteúdo
+            bruto do arquivo em bytes.
+        encoding (str): Codificação de texto para campos de string.
+            Padrão: ``"latin1"``.
+
+    Returns:
+        pandas.DataFrame: Todos os valores são retornados como strings.
+
+    Raises:
+        DBFError: Se o arquivo não for um .dbf válido.
+        OSError: Se o arquivo não puder ser aberto para leitura.
+
+    Example:
+        >>> import readdbc
+        >>> df = readdbc.read_dbf("dados.dbf")
+        >>> list(df.columns)[:3]
+        ['CAMPO1', 'CAMPO2', 'CAMPO3']
     """
     if isinstance(source, (str, Path)):
         with open(source, "rb") as f:

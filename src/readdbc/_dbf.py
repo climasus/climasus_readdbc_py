@@ -29,7 +29,25 @@ _DBF_VERSIONS = {
 
 
 def is_dbf(data: bytes | memoryview) -> bool:
-    """Return True if *data* looks like a valid DBF file."""
+    """Verifica se os dados fornecidos correspondem a um arquivo DBF válido.
+
+    Checa o primeiro byte com o conjunto de versões dBASE conhecidas e valida
+    o tamanho mínimo do cabeçalho (32 bytes).
+
+    Args:
+        data (bytes | memoryview): Conteúdo binário a ser inspecionado.
+            Apenas os primeiros 32 bytes são necessários para a verificação.
+
+    Returns:
+        bool: ``True`` se o primeiro byte for uma versão dBASE conhecida e o
+            dado tiver pelo menos 32 bytes; ``False`` caso contrário.
+
+    Example:
+        >>> is_dbf(open("dados.dbf", "rb").read(32))
+        True
+        >>> is_dbf(b"\\x00" * 32)
+        False
+    """
     if len(data) < 32:
         return False
     return data[0] in _DBF_VERSIONS
@@ -38,6 +56,8 @@ def is_dbf(data: bytes | memoryview) -> bool:
 # ── Field descriptor ────────────────────────────────────────────────────
 
 class _Field:
+    """Descreve um campo (coluna) de um arquivo DBF."""
+
     __slots__ = ("name", "type", "length", "decimal")
 
     def __init__(self, name: str, ftype: str, length: int, decimal: int) -> None:
@@ -88,14 +108,34 @@ def read_dbf_records(
     encoding: str = "latin1",
     include_deleted: bool = False,
 ) -> tuple[list[_Field], list[dict[str, Any]]]:
-    """Parse a DBF file from raw bytes.
+    """Analisa um arquivo DBF a partir de bytes brutos no formato orientado a registros.
 
-    Returns
-    -------
-    fields : list[_Field]
-        Field descriptors.
-    records : list[dict]
-        One dict per record, keyed by field name.
+    Retorna os descritores de campo e os registros como lista de dicionários,
+    com uma chave por nome de campo em cada registro.
+
+    Args:
+        data (bytes | memoryview): Conteúdo binário completo do arquivo DBF.
+        encoding (str): Codificação de texto para campos do tipo caractere.
+            Padrão: ``"latin1"``.
+        include_deleted (bool): Se ``True``, inclui registros marcados como
+            excluídos (flag ``0x2A``). Padrão: ``False``.
+
+    Returns:
+        tuple[list[_Field], list[dict]]: Par ``(fields, records)`` onde
+            ``fields`` contém os descritores de campo e ``records`` é uma
+            lista de dicionários — um por registro — mapeando nome do campo
+            ao valor decodificado (``str`` ou ``None``).
+
+    Raises:
+        DBFError: Se o arquivo for muito pequeno, não contiver descritores
+            de campo ou tiver ``record_size`` igual a zero.
+
+    Example:
+        >>> with open("dados.dbf", "rb") as f:
+        ...     data = f.read()
+        >>> fields, records = read_dbf_records(data, encoding="latin1")
+        >>> records[0]
+        {'CAMPO1': 'valor', 'CAMPO2': '123'}
     """
     if len(data) < 32:
         raise DBFError("data too short to contain a DBF header")
@@ -154,11 +194,34 @@ def read_dbf_columns(
     encoding: str = "latin1",
     include_deleted: bool = False,
 ) -> dict[str, list[Any]]:
-    """Parse a DBF file into column-oriented dict (faster for DataFrame).
+    """Analisa um arquivo DBF no formato orientado a colunas (mais rápido para DataFrame).
 
-    Returns
-    -------
-    dict mapping field name → list of values (one per record).
+    Alternativa a ``read_dbf_records`` otimizada para criação de
+    ``pandas.DataFrame``: retorna um dicionário de listas em vez de lista de
+    dicionários, evitando a criação de objetos intermediários por registro.
+    Nomes de campo duplicados recebem sufixo ``_2``, ``_3``, etc.
+
+    Args:
+        data (bytes | memoryview): Conteúdo binário completo do arquivo DBF.
+        encoding (str): Codificação de texto para campos do tipo caractere.
+            Padrão: ``"latin1"``.
+        include_deleted (bool): Se ``True``, inclui registros marcados como
+            excluídos (flag ``0x2A``). Padrão: ``False``.
+
+    Returns:
+        dict[str, list]: Dicionário mapeando nome de campo → lista de valores
+            (um por registro).
+
+    Raises:
+        DBFError: Se o arquivo for muito pequeno, não contiver descritores
+            de campo ou tiver ``record_size`` igual a zero.
+
+    Example:
+        >>> with open("dados.dbf", "rb") as f:
+        ...     data = f.read()
+        >>> cols = read_dbf_columns(data)
+        >>> import pandas as pd
+        >>> df = pd.DataFrame(cols)
     """
     if len(data) < 32:
         raise DBFError("data too short to contain a DBF header")

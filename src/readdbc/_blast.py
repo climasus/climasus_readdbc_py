@@ -51,14 +51,18 @@ class BlastError(Exception):
 # ── Huffman table construction ──────────────────────────────────────────
 
 def _construct(rep: bytes) -> tuple[list[int], list[int]]:
-    """Build canonical Huffman decode tables from packed representation.
+    """Monta tabelas de decodificação Huffman canônicas a partir da representação compacta.
 
-    Returns
-    -------
-    count : list[int]
-        count[i] = number of symbols with code length *i* (0 .. MAXBITS).
-    symbol : list[int]
-        Symbols sorted by code length, then by original order.
+    Args:
+        rep (bytes): Representação empacotada dos comprimentos; cada byte
+            codifica ``(count, bit_length)`` onde count = (byte >> 4) + 1
+            e bit_length = byte & 0x0F.
+
+    Returns:
+        tuple[list[int], list[int]]: Par ``(count, symbol)`` onde
+            ``count[i]`` = número de símbolos com comprimento de código *i*
+            (0 .. MAXBITS) e ``symbol`` contém os símbolos ordenados por
+            comprimento e, dentro do mesmo comprimento, por ordem original.
     """
     # Expand packed (count, length) pairs into per-symbol lengths.
     lengths: list[int] = []
@@ -182,23 +186,32 @@ class _BitReader:
 # ── Public API ──────────────────────────────────────────────────────────
 
 def blast_decompress(data: bytes | memoryview) -> bytes:
-    """Decompress a PKWare DCL Implode (blast) compressed stream.
+    """Descomprime um fluxo PKWare DCL Implode (blast / explode).
 
-    Parameters
-    ----------
-    data : bytes
-        Raw compressed payload (without any DBC header — just the blast
-        stream starting with the *lit* flag byte).
+    Implementação pura em Python do descompressor blast de Mark Adler
+    (zlib/contrib/blast).  Os arquivos .dbc do DATASUS usam esta comprossão
+    nos registros dBASE III.
 
-    Returns
-    -------
-    bytes
-        Decompressed data.
+    Args:
+        data (bytes | memoryview): Payload comprimido bruto sem nenhum
+            cabeçalho DBC — apenas o fluxo blast a partir do byte de flag
+            *lit* (deslocamento ``header_size + 4`` no arquivo .dbc).
 
-    Raises
-    ------
-    BlastError
-        If the input is malformed.
+    Returns:
+        bytes: Dados descomprimidos.
+
+    Raises:
+        BlastError: Se a entrada estiver malformada (flag *lit* inválida,
+            bits de dicionário fora do intervalo 4–6, código Huffman
+            insubscrito, distância fora do limite da janela ou fim inesperado
+            do fluxo comprimido).
+
+    Example:
+        >>> from readdbc._blast import blast_decompress
+        >>> raw = open("DOSP2023.dbc", "rb").read()
+        >>> import struct
+        >>> header_size = struct.unpack_from("<H", raw, 8)[0]
+        >>> raw_records = blast_decompress(raw[header_size + 4:])
     """
     reader = _BitReader(data)
     output = bytearray()

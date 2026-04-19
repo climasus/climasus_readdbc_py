@@ -12,7 +12,7 @@ Leitor puro-Python para arquivos `.dbc` do DATASUS — formato dBASE III com com
 ## Instalação
 
 ```bash
-pip install readdbc
+pip install climasus_readdbc_py
 ```
 
 **Requisitos:** Python ≥ 3.10, pandas ≥ 2.0
