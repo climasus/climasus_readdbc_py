@@ -10,7 +10,10 @@ readme = "README.md"
 license = "MIT"
 license-files = ["LICENSE"]
 requires-python = ">=3.10"
-authors = [{ name = "ClimaSUS Team" }]
+authors = [{ name = "ClimaSUS Team", email = "maxanjos@campus.ul.pt" }]
+maintainers = [
+    { name = "Max Anjos", email = "maxanjos@campus.ul.pt" },
+]
 keywords = ["datasus", "dbc", "dbf", "sus", "blast", "pkware"]
 classifiers = [
     "Development Status :: 4 - Beta",
