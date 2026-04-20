@@ -198,6 +198,7 @@
     background: transparent !important;
     color: inherit !important;
     -webkit-text-fill-color: initial;
+
 }
 
 .doc-label {
@@ -308,4 +309,51 @@
 
 [data-md-color-scheme="slate"] .md-typeset table:not([class]) th {
     background: linear-gradient(135deg, rgba(0, 204, 106, 0.10), rgba(168, 85, 247, 0.10));
+}
+
+/* ---------------------------------------------------------------------------
+   Navigation tabs — azul da paleta
+   --------------------------------------------------------------------------- */
+.md-tabs {
+    background: var(--climasus-logo-blue);   /* #0091FF */
+}
+
+.md-tabs__link {
+    opacity: 0.80;
+    color: #ffffff;
+}
+
+.md-tabs__link:hover {
+    opacity: 1;
+    color: #ffffff;
+}
+
+.md-tabs__link--active {
+    opacity: 1;
+    color: #ffffff;
+    border-bottom: 2px solid rgba(255, 255, 255, 0.85);
+}
+
+/* ---------------------------------------------------------------------------
+   Logo — círculo branco para contraste adequado
+   --------------------------------------------------------------------------- */
+a.md-header__button.md-logo {
+    background: #ffffff;
+    border-radius: 50%;
+    width: 36px;
+    height: 36px;
+    padding: 4px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    box-shadow: 0 1px 6px rgba(0, 0, 0, 0.18);
+    cursor: pointer;
+}
+
+a.md-header__button.md-logo img,
+a.md-header__button.md-logo svg {
+    height: 26px;
+    width: 26px;
+    border-radius: 0;
 }
