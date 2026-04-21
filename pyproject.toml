@@ -4,15 +4,20 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "climasus_readdbc_py"
-version = "0.1.0"
+version = "0.1.1"
 description = "Pure-Python reader for DATASUS .dbc files (blast-compressed dBASE III)"
 readme = "README.md"
 license = "MIT"
 license-files = ["LICENSE"]
 requires-python = ">=3.10"
-authors = [{ name = "ClimaSUS Team", email = "maxanjos@campus.ul.pt" }]
+authors = [
+    { name = "Dr. Max Anjos", email = "max.anjos@campus.ul.pt" },
+    { name = "Thauã Menezes", email = "thaua.menezes@unesp.br" },
+    { name = "Marlon Resende Faria", email = "marlon.faria@usp.br" },
+    { name = "Andrey Araújo", email = "andreyke.araujo@gmail.com" },
+]
 maintainers = [
-    { name = "Max Anjos", email = "maxanjos@campus.ul.pt" },
+    { name = "Dr. Max Anjos", email = "max.anjos@campus.ul.pt" },
 ]
 keywords = ["datasus", "dbc", "dbf", "sus", "blast", "pkware"]
 classifiers = [
