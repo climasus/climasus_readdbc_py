@@ -21,7 +21,7 @@ import pandas as pd
 from climasus_readdbc._blast import BlastError, blast_decompress
 from climasus_readdbc._dbf import DBFError, is_dbf, read_dbf_columns
 
-__version__ = "0.2.0"
+__version__ = "0.1.3"
 
 __all__ = [
     "__version__",
