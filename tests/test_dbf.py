@@ -4,8 +4,8 @@ import struct
 import pytest
 import pandas as pd
 
-from readdbc._dbf import DBFError, read_dbf_columns, is_dbf
-from readdbc import read_dbc, read_dbf, dbc_to_dbf, DBCError
+from climasus_readdbc._dbf import DBFError, read_dbf_columns, is_dbf
+from climasus_readdbc import read_dbc, read_dbf, dbc_to_dbf, DBCError
 
 
 # ── Synthetic DBF builder ───────────────────────────────────────────────

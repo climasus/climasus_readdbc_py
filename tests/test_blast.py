@@ -7,7 +7,7 @@ Uses the canonical test vector from Mark Adler's blast.c:
 
 import pytest
 
-from readdbc._blast import BlastError, blast_decompress, _construct
+from climasus_readdbc._blast import BlastError, blast_decompress, _construct
 
 
 # ── Table construction tests ────────────────────────────────────────────
@@ -15,7 +15,7 @@ from readdbc._blast import BlastError, blast_decompress, _construct
 class TestConstruct:
     def test_litlen_expands_to_256(self):
         """Literal code table must expand to 256 symbols."""
-        from readdbc._blast import _LITLEN
+        from climasus_readdbc._blast import _LITLEN
         count, symbol = _construct(_LITLEN)
         total = sum(count[1:])
         # total coded symbols = len(symbol)
@@ -24,13 +24,13 @@ class TestConstruct:
         assert count[0] + total == 256
 
     def test_lenlen_expands_to_16(self):
-        from readdbc._blast import _LENLEN
+        from climasus_readdbc._blast import _LENLEN
         count, symbol = _construct(_LENLEN)
         total = sum(count)
         assert total == 16
 
     def test_distlen_expands_to_64(self):
-        from readdbc._blast import _DISTLEN
+        from climasus_readdbc._blast import _DISTLEN
         count, symbol = _construct(_DISTLEN)
         total = sum(count)
         assert total == 64

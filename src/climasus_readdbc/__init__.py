@@ -1,14 +1,14 @@
-"""readdbc — Pure-Python reader for DATASUS .dbc files.
+"""climasus_readdbc — Pure-Python reader for DATASUS .dbc files.
 
 Zero external dependencies beyond pandas.  No C compiler needed.
 
 Usage::
 
-    import readdbc
+    import climasus_readdbc
 
-    df = readdbc.read_dbc("DOSP2023.dbc")
-    df = readdbc.read_dbf("data.dbf")
-    raw = readdbc.blast_decompress(compressed_bytes)
+    df = climasus_readdbc.read_dbc("DOSP2023.dbc")
+    df = climasus_readdbc.read_dbf("data.dbf")
+    raw = climasus_readdbc.blast_decompress(compressed_bytes)
 """
 
 from __future__ import annotations
@@ -18,10 +18,10 @@ from pathlib import Path
 
 import pandas as pd
 
-from readdbc._blast import BlastError, blast_decompress
-from readdbc._dbf import DBFError, is_dbf, read_dbf_columns
+from climasus_readdbc._blast import BlastError, blast_decompress
+from climasus_readdbc._dbf import DBFError, is_dbf, read_dbf_columns
 
-__version__ = "0.1.0"
+__version__ = "0.2.0"
 
 __all__ = [
     "__version__",
