@@ -16,7 +16,7 @@
         <link rel="prev" href="../installation/">
       
       
-        <link rel="next" href="../reference/readdbc/">
+        <link rel="next" href="../reference/climasus_readdbc/">
       
       
         
@@ -289,7 +289,7 @@
     
     
       <li class="md-tabs__item">
-        <a href="../reference/readdbc/" class="md-tabs__link">
+        <a href="../reference/climasus_readdbc/" class="md-tabs__link">
           
   
   
@@ -488,10 +488,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#converter-dbc-para-dbf-sem-carregar-na-memoria" class="md-nav__link">
+  <a href="#converter-bytes-dbc-para-bytes-dbf" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Converter .dbc para .dbf sem carregar na memória
+        Converter bytes .dbc para bytes .dbf
       
     </span>
   </a>
@@ -574,14 +574,42 @@
   
   
     <li class="md-nav__item">
-      <a href="../reference/readdbc/" class="md-nav__link">
+      <a href="../reference/climasus_readdbc/" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
     
   
-    readdbc
+    climasus_readdbc
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../reference/climasus_readdbc_py/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    climasus_readdbc_py
   
 
     
@@ -651,10 +679,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#converter-dbc-para-dbf-sem-carregar-na-memoria" class="md-nav__link">
+  <a href="#converter-bytes-dbc-para-bytes-dbf" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Converter .dbc para .dbf sem carregar na memória
+        Converter bytes .dbc para bytes .dbf
       
     </span>
   </a>
@@ -694,22 +722,25 @@
 
 <h1 id="uso">Uso<a class="headerlink" href="#uso" title="Permanent link">&para;</a></h1>
 <h2 id="ler-arquivo-dbc">Ler arquivo <code>.dbc</code><a class="headerlink" href="#ler-arquivo-dbc" title="Permanent link">&para;</a></h2>
-<div class="language-python highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="kn">import</span><span class="w"> </span><span class="nn">readdbc</span>
+<div class="language-python highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="kn">import</span><span class="w"> </span><span class="nn">climasus_readdbc_py</span>
 <a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>
-<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="n">df</span> <span class="o">=</span> <span class="n">readdbc</span><span class="o">.</span><span class="n">read_dbc</span><span class="p">(</span><span class="s2">&quot;DOSP2023.dbc&quot;</span><span class="p">)</span>
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="n">df</span> <span class="o">=</span> <span class="n">climasus_readdbc_py</span><span class="o">.</span><span class="n">read_dbc</span><span class="p">(</span><span class="s2">&quot;DOSP2023.dbc&quot;</span><span class="p">)</span>
 <a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="nb">print</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
 <a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="nb">print</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">head</span><span class="p">())</span>
 </code></pre></div>
 <h2 id="ler-arquivo-dbf">Ler arquivo <code>.dbf</code><a class="headerlink" href="#ler-arquivo-dbf" title="Permanent link">&para;</a></h2>
-<div class="language-python highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="n">df</span> <span class="o">=</span> <span class="n">readdbc</span><span class="o">.</span><span class="n">read_dbf</span><span class="p">(</span><span class="s2">&quot;dados.dbf&quot;</span><span class="p">)</span>
+<div class="language-python highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="n">df</span> <span class="o">=</span> <span class="n">climasus_readdbc_py</span><span class="o">.</span><span class="n">read_dbf</span><span class="p">(</span><span class="s2">&quot;dados.dbf&quot;</span><span class="p">)</span>
 </code></pre></div>
-<h2 id="converter-dbc-para-dbf-sem-carregar-na-memoria">Converter <code>.dbc</code> para <code>.dbf</code> sem carregar na memória<a class="headerlink" href="#converter-dbc-para-dbf-sem-carregar-na-memoria" title="Permanent link">&para;</a></h2>
-<div class="language-python highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="n">readdbc</span><span class="o">.</span><span class="n">dbc_to_dbf</span><span class="p">(</span><span class="s2">&quot;DOSP2023.dbc&quot;</span><span class="p">,</span> <span class="s2">&quot;DOSP2023.dbf&quot;</span><span class="p">)</span>
+<h2 id="converter-bytes-dbc-para-bytes-dbf">Converter bytes <code>.dbc</code> para bytes <code>.dbf</code><a class="headerlink" href="#converter-bytes-dbc-para-bytes-dbf" title="Permanent link">&para;</a></h2>
+<div class="language-python highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">pathlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">Path</span>
+<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>
+<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="n">raw</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="s2">&quot;DOSP2023.dbc&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">read_bytes</span><span class="p">()</span>
+<a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="n">dbf_bytes</span> <span class="o">=</span> <span class="n">climasus_readdbc_py</span><span class="o">.</span><span class="n">dbc_to_dbf</span><span class="p">(</span><span class="n">raw</span><span class="p">)</span>
 </code></pre></div>
 <h2 id="encoding">Encoding<a class="headerlink" href="#encoding" title="Permanent link">&para;</a></h2>
 <p>Por padrão, strings são decodificadas em <code>latin-1</code> (padrão DATASUS).
 Para sobrescrever:</p>
-<div class="language-python highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="n">df</span> <span class="o">=</span> <span class="n">readdbc</span><span class="o">.</span><span class="n">read_dbc</span><span class="p">(</span><span class="s2">&quot;arquivo.dbc&quot;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s2">&quot;utf-8&quot;</span><span class="p">)</span>
+<div class="language-python highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="n">df</span> <span class="o">=</span> <span class="n">climasus_readdbc_py</span><span class="o">.</span><span class="n">read_dbc</span><span class="p">(</span><span class="s2">&quot;arquivo.dbc&quot;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s2">&quot;utf-8&quot;</span><span class="p">)</span>
 </code></pre></div>
 
 
