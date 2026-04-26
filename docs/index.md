@@ -15,13 +15,13 @@ pip install climasus_readdbc_py
 ## Uso rápido
 
 ```python
-import readdbc
+import climasus_readdbc_py
 
 # Ler arquivo .dbc diretamente como DataFrame pandas
-df = readdbc.read_dbc("DOSP2023.dbc")
+df = climasus_readdbc_py.read_dbc("DOSP2023.dbc")
 
 # Ler arquivo .dbf
-df = readdbc.read_dbf("dados.dbf")
+df = climasus_readdbc_py.read_dbf("dados.dbf")
 ```
 
 ## Links

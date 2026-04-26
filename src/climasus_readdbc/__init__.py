@@ -1,14 +1,14 @@
-"""climasus_readdbc — Pure-Python reader for DATASUS .dbc files.
+"""Compatibility import path for climasus_readdbc_py.
 
 Zero external dependencies beyond pandas.  No C compiler needed.
 
 Usage::
 
-    import climasus_readdbc
+    import climasus_readdbc_py
 
-    df = climasus_readdbc.read_dbc("DOSP2023.dbc")
-    df = climasus_readdbc.read_dbf("data.dbf")
-    raw = climasus_readdbc.blast_decompress(compressed_bytes)
+    df = climasus_readdbc_py.read_dbc("DOSP2023.dbc")
+    df = climasus_readdbc_py.read_dbf("data.dbf")
+    raw = climasus_readdbc_py.blast_decompress(compressed_bytes)
 """
 
 from __future__ import annotations
@@ -21,7 +21,7 @@ import pandas as pd
 from climasus_readdbc._blast import BlastError, blast_decompress
 from climasus_readdbc._dbf import DBFError, is_dbf, read_dbf_columns
 
-__version__ = "0.1.3"
+__version__ = "0.2.1"
 
 __all__ = [
     "__version__",
@@ -149,8 +149,8 @@ def read_dbc(
         OSError: Se o arquivo não puder ser aberto para leitura.
 
     Example:
-        >>> import readdbc
-        >>> df = readdbc.read_dbc("DOSP2023.dbc")
+        >>> import climasus_readdbc_py
+        >>> df = climasus_readdbc_py.read_dbc("DOSP2023.dbc")
         >>> print(df.shape)
         (n_records, n_fields)
     """
@@ -186,8 +186,8 @@ def read_dbf(
         OSError: Se o arquivo não puder ser aberto para leitura.
 
     Example:
-        >>> import readdbc
-        >>> df = readdbc.read_dbf("dados.dbf")
+        >>> import climasus_readdbc_py
+        >>> df = climasus_readdbc_py.read_dbf("dados.dbf")
         >>> list(df.columns)[:3]
         ['CAMPO1', 'CAMPO2', 'CAMPO3']
     """

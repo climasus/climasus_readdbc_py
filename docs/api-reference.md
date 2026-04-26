@@ -1,12 +1,12 @@
 # API Reference
 
-Referência completa das funções públicas do pacote `readdbc`.
+Referência completa das funções públicas do pacote `climasus_readdbc_py`.
 
 ---
 
 ## Funções principais
 
-::: readdbc
+::: climasus_readdbc_py
     options:
       members:
         - read_dbc

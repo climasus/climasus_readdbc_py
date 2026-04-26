@@ -13,7 +13,6 @@ Reference:
 from __future__ import annotations
 
 import struct
-from pathlib import Path
 from typing import Any
 
 
@@ -140,7 +139,6 @@ def read_dbf_records(
     if len(data) < 32:
         raise DBFError("data too short to contain a DBF header")
 
-    version = data[0]
     n_records = struct.unpack_from("<I", data, 4)[0]
     header_size = struct.unpack_from("<H", data, 8)[0]
     record_size = struct.unpack_from("<H", data, 10)[0]

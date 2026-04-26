@@ -3,9 +3,9 @@
 ## Ler arquivo `.dbc`
 
 ```python
-import readdbc
+import climasus_readdbc_py
 
-df = readdbc.read_dbc("DOSP2023.dbc")
+df = climasus_readdbc_py.read_dbc("DOSP2023.dbc")
 print(df.shape)
 print(df.head())
 ```
@@ -13,13 +13,16 @@ print(df.head())
 ## Ler arquivo `.dbf`
 
 ```python
-df = readdbc.read_dbf("dados.dbf")
+df = climasus_readdbc_py.read_dbf("dados.dbf")
 ```
 
-## Converter `.dbc` para `.dbf` sem carregar na memória
+## Converter bytes `.dbc` para bytes `.dbf`
 
 ```python
-readdbc.dbc_to_dbf("DOSP2023.dbc", "DOSP2023.dbf")
+from pathlib import Path
+
+raw = Path("DOSP2023.dbc").read_bytes()
+dbf_bytes = climasus_readdbc_py.dbc_to_dbf(raw)
 ```
 
 ## Encoding
@@ -28,5 +31,5 @@ Por padrão, strings são decodificadas em `latin-1` (padrão DATASUS).
 Para sobrescrever:
 
 ```python
-df = readdbc.read_dbc("arquivo.dbc", encoding="utf-8")
+df = climasus_readdbc_py.read_dbc("arquivo.dbc", encoding="utf-8")
 ```

@@ -1,12 +1,12 @@
 """Tests for the DBF reader and DBC integration."""
 
 import struct
-import pytest
+
 import pandas as pd
+import pytest
 
-from climasus_readdbc._dbf import DBFError, read_dbf_columns, is_dbf
-from climasus_readdbc import read_dbc, read_dbf, dbc_to_dbf, DBCError
-
+from climasus_readdbc_py import DBCError, dbc_to_dbf, read_dbc, read_dbf
+from climasus_readdbc_py._dbf import DBFError, is_dbf, read_dbf_columns
 
 # ── Synthetic DBF builder ───────────────────────────────────────────────
 
@@ -199,6 +199,13 @@ class TestReadDBC:
         df = read_dbc(dbf)
         assert len(df) == 1
         assert df["X"].iloc[0] == "hello"
+
+    def test_legacy_import_alias(self):
+        """O import legado continua funcionando para compatibilidade."""
+        import climasus_readdbc
+        import climasus_readdbc_py
+
+        assert climasus_readdbc.read_dbc is climasus_readdbc_py.read_dbc
 
     def test_dbc_from_file(self, tmp_path):
         """read_dbc should work with file paths too (plain DBF test)."""

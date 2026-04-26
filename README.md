@@ -1,8 +1,8 @@
-# readdbc
+# climasus_readdbc_py
 
-[![PyPI version](https://img.shields.io/pypi/v/readdbc.svg)](https://pypi.org/project/readdbc/)
+[![PyPI version](https://img.shields.io/pypi/v/climasus_readdbc_py.svg)](https://pypi.org/project/climasus_readdbc_py/)
 [![CI](https://github.com/climasus/climasus_readdbc_py/actions/workflows/ci.yml/badge.svg)](https://github.com/climasus/climasus_readdbc_py/actions/workflows/ci.yml)
-[![Python Versions](https://img.shields.io/pypi/pyversions/readdbc.svg)](https://pypi.org/project/readdbc/)
+[![Python Versions](https://img.shields.io/pypi/pyversions/climasus_readdbc_py.svg)](https://pypi.org/project/climasus_readdbc_py/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 Leitor puro-Python para arquivos `.dbc` do DATASUS — formato dBASE III com compressão PKWARE blast. Sem dependências C, sem compilador necessário.
@@ -22,20 +22,23 @@ pip install climasus_readdbc_py
 ## Uso rápido
 
 ```python
-import readdbc
+import climasus_readdbc_py
 
 # Ler arquivo .dbc diretamente como DataFrame pandas
-df = readdbc.read_dbc("DOSP2023.dbc")
+df = climasus_readdbc_py.read_dbc("DOSP2023.dbc")
 
 # Ler arquivo .dbf comum
-df = readdbc.read_dbf("dados.dbf")
+df = climasus_readdbc_py.read_dbf("dados.dbf")
 
 # Descomprimir bytes brutos de um .dbc para .dbf
 with open("DOSP2023.dbc", "rb") as f:
     compressed = f.read()
 
-raw_dbf_bytes = readdbc.blast_decompress(compressed)
+raw_dbf_bytes = climasus_readdbc_py.blast_decompress(compressed)
 ```
+
+`climasus_readdbc` continua disponível como alias legado para compatibilidade,
+mas código novo deve usar `climasus_readdbc_py`.
 
 ---
 

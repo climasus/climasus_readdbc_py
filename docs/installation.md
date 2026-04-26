@@ -16,14 +16,16 @@ pip install climasus_readdbc_py
 ```toml
 [project]
 dependencies = [
-    "climasus_readdbc_py>=0.1.0",
+    "climasus_readdbc_py>=0.2.1",
 ]
 ```
 
 ## Importação
 
-O pacote é instalado como `climasus_readdbc_py` no PyPI, mas importado como `readdbc`:
+O nome de instalação e o nome de importação são o mesmo:
 
 ```python
-import readdbc
+import climasus_readdbc_py
 ```
+
+`climasus_readdbc` continua disponível como alias legado para compatibilidade.

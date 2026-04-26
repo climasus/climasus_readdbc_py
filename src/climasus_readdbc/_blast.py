@@ -207,7 +207,7 @@ def blast_decompress(data: bytes | memoryview) -> bytes:
             do fluxo comprimido).
 
     Example:
-        >>> from readdbc._blast import blast_decompress
+        >>> from climasus_readdbc_py._blast import blast_decompress
         >>> raw = open("DOSP2023.dbc", "rb").read()
         >>> import struct
         >>> header_size = struct.unpack_from("<H", raw, 8)[0]

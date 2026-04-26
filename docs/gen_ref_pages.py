@@ -1,7 +1,7 @@
 """Generate the API reference pages automatically from source code.
 
 This script is executed by mkdocs-gen-files during the build process.
-It walks the src/readdbc package tree, creates one Markdown page per
+It walks the src/climasus_readdbc_py package tree, creates one Markdown page per
 public module, and writes a SUMMARY.md consumed by mkdocs-literate-nav.
 """
 
